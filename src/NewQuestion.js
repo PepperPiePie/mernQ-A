@@ -24,7 +24,8 @@ class NewQuestion extends Component {
             input: {
                 title: this.refs.title.value,
                 description: this.refs.description.value,
-                tags: this.refs.tags.value.split(", ")}
+                tags: this.refs.tags.value.split(", "),
+                answers: []}
         }, function () {
             console.log({...this.state.input});
             this.props.addData(this.state.input);
@@ -46,7 +47,7 @@ class NewQuestion extends Component {
                         <legend>New question</legend>
 
                         <input ref='title' type='text' placeholder='Title for your question'/>
-                        <textarea ref='description' rows='10' id='input_question' placeholder='What is your question'/>
+                        <textarea ref='description' id='input_question' placeholder='What is your question'/>
                         <input ref='tags' type='text' placeholder='List of tags' onChange={this.onChange}/>
 
                         <button className="button" type='submit'>Add new question</button>

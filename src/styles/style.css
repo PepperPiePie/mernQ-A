@@ -110,7 +110,10 @@ h1 {
 }
 
 #navigation {
-    margin-left: 2rem;
+    display: flex;
+    margin: 0 2rem;
+    background-color: #3e4a5b;
+    height: fit-content;
 }
 
 .back {
@@ -137,6 +140,51 @@ h1 {
     margin: 0;
     padding: 2rem 2rem;
     background-color: #cdcdcd;
+}
+
+.answer {
+    border-bottom: solid 2px #3e4a5b;
+    padding: 1rem 2rem 1rem 5rem;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+
+.answer p {
+    font-style: italic;
+    margin: 0 0 0.5rem 0;
+}
+
+.answer_footer {
+    font-size: 0.8em;
+    font-weight: bold;
+    color: #bdbdbd;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.answer button{
+    border: 0;
+    margin-top: 0.5rem;
+}
+
+.answer .like {
+    font-size: 22px;
+    color: #bdbdbd;
+
+}
+
+.answer_footer span {
+    width: 10rem;
+}
+
+.answer_form {
+    margin: 0 2rem 1rem 2rem;
+}
+.answer_form input, textarea{
+    box-sizing: border-box;
+    width: 100% !important;
 }
 
 #question_header {
@@ -184,12 +232,14 @@ input, textarea {
     background-color: #ECECEC;
     color: #c04b4f;
     border: #ec5d62 solid 2px;
-    width: 90%;
+    width: 100%;
     transition: border 150ms ease-in, background-color 150ms ease-in;
+    box-sizing: border-box;
 }
 
 textarea {
     resize: none;
+    height: 10rem !important;
 }
 
 input:focus, textarea:focus {
@@ -222,8 +272,8 @@ input:focus, textarea:focus {
     }
 
     #navigation {
-        display: flex;
         justify-content: center;
         margin: 0 0 3rem 0;
     }
+
 }

@@ -50,7 +50,7 @@ class EditQuestion extends Component {
                         <legend>Edit question</legend>
 
                         <input ref='title' placeholder={question.title}/>
-                        <textarea ref='description' rows='10' placeholder={question.description}/>
+                        <textarea ref='description' placeholder={question.description}/>
                         <input ref='tags' placeholder={question.tags} onChange={this.onChange}/>
 
                         <button className="button" type='submit'>Send update</button>

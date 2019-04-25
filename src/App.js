@@ -46,7 +46,44 @@ class App extends Component {
         })
             .then(response => response.json())
             .then(json => {
-                console.log("Result of posting a new recipe:");
+                console.log("Result of posting a new question:");
+                console.log(json);
+            });
+    }
+
+    addAnswerData(text) {
+        fetch('http://localhost:8080/questions/'+ text.ref_id +'/answer', {
+            method: 'PUT',
+            body: JSON.stringify({
+                    author: text.author,
+                    content: text.content,
+                    likes: text.likes
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+            .then(response => response.json())
+            .then(json => {
+                console.log("Result of posting a new answer:");
+                console.log(json);
+            });
+    }
+
+    addVote(text) {
+        fetch('http://localhost:8080/questions/'+ text.ref_id +'/answer/likes', {
+            method: 'PUT',
+            body: JSON.stringify({
+                ref_id: text.ref_id,
+                likes: text.likes
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+            .then(response => response.json())
+            .then(json => {
+                console.log("Result of voting:");
                 console.log(json);
             });
     }
@@ -65,10 +102,11 @@ class App extends Component {
         })
             .then(response => response.json())
             .then(json => {
-                console.log("Result of posting a new recipe:");
+                console.log("Result of editing the question:");
                 console.log(json);
             });
     }
+
 
     getQuestionFromId(id) {
         return this.state.questions.find((elm) => elm._id === id);
@@ -99,7 +137,9 @@ class App extends Component {
 
                         <Route exact path={'/questions/:id'}
                                render={(props) => <Question {...props}
-                                        question={this.getQuestionFromId(props.match.params.id)}/>}
+                                        question={this.getQuestionFromId(props.match.params.id)}
+                                        addAnswerData={this.addAnswerData}
+                                        addVote={this.addVote}/>}
                         />
 
                         <Route exact path={'/questions/edit/:id'}

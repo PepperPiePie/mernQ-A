@@ -23,6 +23,9 @@ app.use((req, res, next) => {
     }
 });
 
+
+
+
 /****** Mongoose *****/
 const mongoose = require('mongoose');
 
@@ -39,85 +42,15 @@ db.once('open', function() {
     console.log("DB connection is open.");
 });
 
-let questionSchema = new mongoose.Schema({
-    // id: Number,
-    title: String,
-    description: String,
-    tags: [String]
-});
-
-let Question = mongoose.model('Question', questionSchema);
-
-
-
 const port = (process.env.PORT || 8080);
 
-/****** Data *****/
-/* const data = [
-    {
-        id: 0,
-        title: "Apple pie",
-        description: "Apple pie is best served warm with a scoop of vanilla ice-cream",
-        ingredients: ['apples', 'eggs', 'butter', 'flour', 'sugar', 'cinnamon'],
-        prep_time: 20,
-        total_time: 80
-    },
-    {
-        id: 1,
-        title: "Cherry pie",
-        description: "American classic from good old times",
-        ingredients: ['cherries', 'egg', 'butter', 'flour', 'sugar'],
-        prep_time: 10,
-        total_time: 60
-    },
-    {
-        id: 2,
-        title: "Lemon meringue pie",
-        description: "For fans of strong experiences",
-        ingredients: ['lemons', 'oranges', 'egg', 'butter', 'flour', 'sugar', 'cinnamon'],
-        prep_time: 40,
-        total_time: 80
-    },
-    {
-        id: 3,
-        title: "Pizza",
-        description: "Pizza is nice",
-        ingredients: ['cheese', 'tomato', 'onion'],
-        prep_time: 20,
-        total_time: 30
-    },
-    {
-        id: 4,
-        title: "Vegetable Quiche",
-        description: "Nice with shredded zucchini",
-        ingredients: ['cheese', 'zucchini', 'onion'],
-        prep_time: 30,
-        total_time: 90
-    },
-    {
-        id: 5,
-        title: "Baked Potato with Fried Eggs",
-        description: "Served with bakes beans",
-        ingredients: ['potato', 'beans', 'egg'],
-        prep_time: 10,
-        total_time: 70
-    }
-]; */
+// ********** Models **********
+let Question = require('../models/Question');
+let Answer = require('../models/Answer');
 
-/****** Helper functions *****/
-function getQuestionFromId(id) {
-    return data.find((elm) => elm.id === Number(id));
-}
 
-function filterByTags(tag) {
-    return data.filter((elm) => elm.tags.includes(tag))
-}
 
-function findNextId() {
-    const reducer = (acc, curr) => Math.max(acc, curr);
-    let nextId = data.map(el => el.id).reduce(reducer) + 1;
-    return nextId;
-}
+
 
 /****** Routes *****/
 // GET
@@ -148,6 +81,7 @@ app.post('/questions', (req, res) => {
         title: req.body.title,
         description: req.body.description,
         tags: req.body.tags,
+        answers: req.body.answers
     });
     if(!newQuestion.title || !newQuestion.description || !newQuestion.tags) {
         return res.status(400).json({ msg: 'Please include title, description and list of tags' });
@@ -168,5 +102,23 @@ app.put('/questions/:id', (req, res) => {
         .catch(err => console.log(err))
 });
 
-app.listen(port, () => console.log(`Cooking API running on port ${port}!`));
+app.put('/questions/:id/answer', (req, res) => {
+    Question.findOneAndUpdate({_id: req.params.id}, {$push: {answers: req.body}}, {new: true})
+        .then(function (question) {
+            res.send(question)
+        })
+        .then(console.log(`Answer to question ${req.params.id} was added`))
+        .catch(err => console.log(err))
+});
+
+// app.put('/questions/:id/answer/likes', (req, res) => {
+//     Question.findOneAndUpdate({_id: req.params.id}, {$set: {likes: 7}}, {new: true})
+//         .then(function (question) {
+//             res.send(question)
+//         })
+//         .then(console.log(`Likes for answer was added`))
+//         .catch(err => console.log(err))
+// });
+
+app.listen(port, () => console.log(`Q&A API running on port ${port}!`));
 
