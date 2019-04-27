@@ -16,7 +16,8 @@ class App extends Component {
 
         // TODO: Move this data to the server
         this.state = {
-            questions: []
+            questions: [],
+            isLoading: true
         }
     }
 
@@ -28,7 +29,7 @@ class App extends Component {
     getData() {
         fetch('http://localhost:8080/questions')
             .then(response => response.json()) // Turn into JSON     )
-            .then(questions => this.setState({ questions: questions }))
+            .then(questions => this.setState({ questions: questions, isLoading: false }))
 
     }
 
@@ -116,6 +117,10 @@ class App extends Component {
     }
 
     render() {
+        if (this.state.isLoading) {
+            return <div>Loading...</div>
+        }
+
         return (
             <Router>
                 <div className="container">
