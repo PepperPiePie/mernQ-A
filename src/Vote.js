@@ -18,8 +18,9 @@ class Vote extends Component {
 
         this.setState({
             input: {
-                ref_id: this.props.id,
-                likes: this.props.likes + 1
+                id: this.props.id,
+                ref_id: this.props.ref_id,
+                likes: this.props.likes +1
             }
         }, function () {
             console.log({...this.state.likes});

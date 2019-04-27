@@ -32,7 +32,7 @@ class Question extends Component {
             if (question.answers.length >= 1) {
                 question.answers.forEach((elm) => {
                     answer_list.push(
-                        <div className="answer" key={elm}>
+                        <div className="answer" key={elm._id}>
                             <div>
                                 <p>{elm.content}</p>
                                 <div className="answer_footer">
@@ -40,7 +40,7 @@ class Question extends Component {
                                     <span>Likes: {elm.likes}</span>
                                 </div>
                             </div>
-                            <Vote likes={elm.likes} id={question._id} addVote={this.props.addVote}/>
+                            <Vote likes={elm.likes} ref_id={question._id} id={elm._id} addVote={this.props.addVote}/>
                         </div>
                     )
         })}};

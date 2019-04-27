@@ -28,7 +28,7 @@ class NewQuestion extends Component {
                 answers: []}
         }, function () {
             console.log({...this.state.input});
-            this.props.addData(this.state.input);
+            this.props.addQuestionData(this.state.input);
         });
 
 

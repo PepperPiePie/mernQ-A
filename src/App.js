@@ -32,7 +32,7 @@ class App extends Component {
 
     }
 
-    addData(text) {
+    addQuestionData(text) {
         fetch('http://localhost:8080/questions', {
             method: 'POST',
             body: JSON.stringify({
@@ -71,10 +71,10 @@ class App extends Component {
     }
 
     addVote(text) {
-        fetch('http://localhost:8080/questions/'+ text.ref_id +'/answer/likes', {
+        fetch('http://localhost:8080/questions/'+ text.ref_id +'/answer/like', {
             method: 'PUT',
             body: JSON.stringify({
-                ref_id: text.ref_id,
+                id: text.id,
                 likes: text.likes
             }),
             headers: {
@@ -132,7 +132,7 @@ class App extends Component {
 
                         <Route exact path={'/questions/add'}
                                render={(props) => <NewQuestion {...props}
-                                         addData={this.addData}/>}
+                                         addQuestionData={this.addQuestionData}/>}
                         />
 
                         <Route exact path={'/questions/:id'}

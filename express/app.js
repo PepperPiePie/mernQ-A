@@ -45,12 +45,25 @@ db.once('open', function() {
 const port = (process.env.PORT || 8080);
 
 // ********** Models **********
-let Question = require('../models/Question');
-let Answer = require('../models/Answer');
+//let Question = require('../models/Question');
+//let Answer = require('../models/Answer');
 
+let answerSchema = new mongoose.Schema({
+    author: String,
+    content: String,
+    likes: Number
+});
 
+let questionSchema = new mongoose.Schema({
+    title: String,
+    description: String,
+    tags: [String],
+    //answers: [{type: Schema.Types.ObjectId, ref: 'Answer'}]
+    answers: [answerSchema]
+});
 
-
+let Answer = mongoose.model('Answer', answerSchema);
+let Question = mongoose.model('Question', questionSchema);
 
 /****** Routes *****/
 // GET
@@ -103,7 +116,13 @@ app.put('/questions/:id', (req, res) => {
 });
 
 app.put('/questions/:id/answer', (req, res) => {
-    Question.findOneAndUpdate({_id: req.params.id}, {$push: {answers: req.body}}, {new: true})
+
+    let newAnswer = new Answer ({
+        author: req.body.author,
+        content: req.body.content,
+        likes: req.body.likes});
+
+    Question.findOneAndUpdate({_id: req.params.id}, {$push: {answers: newAnswer}}, {new: true})
         .then(function (question) {
             res.send(question)
         })
@@ -111,14 +130,14 @@ app.put('/questions/:id/answer', (req, res) => {
         .catch(err => console.log(err))
 });
 
-// app.put('/questions/:id/answer/likes', (req, res) => {
-//     Question.findOneAndUpdate({_id: req.params.id}, {$set: {likes: 7}}, {new: true})
-//         .then(function (question) {
-//             res.send(question)
-//         })
-//         .then(console.log(`Likes for answer was added`))
-//         .catch(err => console.log(err))
-// });
+app.put('/questions/:id/answer/like', (req, res) => {
+    Question.updateOne({'answers._id': req.body.id}, {$set: {'answers.$.likes': req.body.likes}}, {new: true})
+        .then(function (question) {
+            res.send(question)
+        })
+        .then(console.log(`Likes for answer was added`))
+        .catch(err => console.log(err))
+});
 
 app.listen(port, () => console.log(`Q&A API running on port ${port}!`));
 
