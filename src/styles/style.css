@@ -167,6 +167,7 @@ h1 {
 .answer button{
     border: 0;
     margin-top: 0.5rem;
+    margin-left: 1.5rem;
 }
 
 .answer .like {

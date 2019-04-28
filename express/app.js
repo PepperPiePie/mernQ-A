@@ -54,8 +54,11 @@ let answerSchema = new mongoose.Schema({
     likes: Number
 });
 
+// const Schema = mongoose.Schema;
+
 let questionSchema = new mongoose.Schema({
     title: String,
+
     description: String,
     tags: [String],
     //answers: [{type: Schema.Types.ObjectId, ref: 'Answer'}]
@@ -79,6 +82,12 @@ app.get('/questions/:id', (req, res) => {
         res.json(questions);
     })
 });
+
+// app.get('/questions/:id', (req, res) => {
+//     Question.find({_id: req.params.id}.populate('answers'), (err, questions) => {
+//         res.json(questions);
+//     })
+// });
 
 app.get('/questions/with/:tag', (req, res) => {
     Question.find({tags: req.params.tags}, (err, questions) => {
@@ -106,6 +115,32 @@ app.post('/questions', (req, res) => {
         .catch(err => console.log(err));
 });
 
+// app.post('/questions/:id/answer', (req, res) => {
+//
+//     let newAnswer = new Answer ({
+//         author: req.body.author,
+//         content: req.body.content,
+//         likes: req.body.likes});
+//
+//     if(!newAnswer.author || !newAnswer.content) {
+//         return res.status(400).json({ msg: 'Please include your name and answer' });
+//     }
+//
+//     newAnswer
+//         .save()
+//         .then(result => res.json({ msg: `You have posted this answer: ${req.body.content}`}))
+//         .catch(err => console.log(err));
+//
+//     let answerID = Answer.findOne({content : req.body.content}, '_id');
+//
+//     Question.findOneAndUpdate({_id: req.params.id}, {$push: {answers: answerID}}, {new: true})
+//         .then(function (question) {
+//             res.send(question)
+//         })
+//         .then(console.log(`Answer ${answerID} was added to question ${req.params.id}`))
+//         .catch(err => console.log(err))
+// });
+
 
 // PUT
 app.put('/questions/:id', (req, res) => {
@@ -121,6 +156,10 @@ app.put('/questions/:id/answer', (req, res) => {
         author: req.body.author,
         content: req.body.content,
         likes: req.body.likes});
+
+    if(!newAnswer.author || !newAnswer.content) {
+        return res.status(400).json({ msg: 'Please include your name and answer' });
+    }
 
     Question.findOneAndUpdate({_id: req.params.id}, {$push: {answers: newAnswer}}, {new: true})
         .then(function (question) {
