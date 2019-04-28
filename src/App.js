@@ -10,6 +10,7 @@ import EditQuestion from "./EditQuestion";
 import NotFound from "./NotFound";
 
 class App extends Component {
+    API_URL = process.env.REACT_APP_API_URL;
 
     constructor(props) {
         super(props);
@@ -27,14 +28,14 @@ class App extends Component {
     }
 
     getData() {
-        fetch('http://localhost:8080/questions')
+        fetch(`api${this.API_URL}/questions`)
             .then(response => response.json()) // Turn into JSON     )
             .then(questions => this.setState({ questions: questions, isLoading: false }))
 
     }
 
     addQuestionData(text) {
-        fetch('http://localhost:8080/questions', {
+        fetch(`api/questions`, {
             method: 'POST',
             body: JSON.stringify({
                 title: text.title,
@@ -53,7 +54,7 @@ class App extends Component {
     }
 
     addAnswerData(text) {
-        fetch('http://localhost:8080/questions/'+ text.ref_id +'/answer', {
+        fetch(`api/questions/`+ text.ref_id +'/answer', {
             method: 'PUT',
             body: JSON.stringify({
                     author: text.author,
@@ -72,7 +73,7 @@ class App extends Component {
     }
 
     addVote(text) {
-        fetch('http://localhost:8080/questions/'+ text.ref_id +'/answer/like', {
+        fetch(`api/questions/`+ text.ref_id +'/answer/like', {
             method: 'PUT',
             body: JSON.stringify({
                 id: text.id,
@@ -90,7 +91,7 @@ class App extends Component {
     }
 
     editData(text) {
-        fetch('http://localhost:8080/questions/'+ text._id, {
+        fetch(`api/questions/`+ text._id, {
             method: 'PUT',
             body: JSON.stringify({
                 title: text.title,

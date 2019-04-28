@@ -1,3 +1,5 @@
+/**** External libraries ****/
+const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
@@ -42,7 +44,6 @@ db.once('open', function() {
     console.log("DB connection is open.");
 });
 
-const port = (process.env.PORT || 8080);
 
 // ********** Models **********
 //let Question = require('../models/Question');
@@ -68,16 +69,19 @@ let questionSchema = new mongoose.Schema({
 let Answer = mongoose.model('Answer', answerSchema);
 let Question = mongoose.model('Question', questionSchema);
 
+
+const port = (process.env.PORT || 8080);
+
 /****** Routes *****/
 // GET
-app.get('/questions/', (req, res) => {
+app.get('/api/questions/', (req, res) => {
     //res.json(data)
     Question.find({}, (err, questions) => {
         res.json(questions);
     }).sort({title: 1})
 });
 
-app.get('/questions/:id', (req, res) => {
+app.get('/api/questions/:id', (req, res) => {
     Question.find({_id: req.params.id}, (err, questions) => {
         res.json(questions);
     })
@@ -89,7 +93,7 @@ app.get('/questions/:id', (req, res) => {
 //     })
 // });
 
-app.get('/questions/with/:tag', (req, res) => {
+app.get('/api/questions/with/:tag', (req, res) => {
     Question.find({tags: req.params.tags}, (err, questions) => {
         res.json(questions);
     })
@@ -97,7 +101,7 @@ app.get('/questions/with/:tag', (req, res) => {
 
 
 // POST
-app.post('/questions', (req, res) => {
+app.post('/api/questions', (req, res) => {
     let newQuestion = new Question({
         //id: findNextId(),
         title: req.body.title,
@@ -143,14 +147,14 @@ app.post('/questions', (req, res) => {
 
 
 // PUT
-app.put('/questions/:id', (req, res) => {
+app.put('/api/questions/:id', (req, res) => {
     Question.findOneAndUpdate({_id: req.params.id}, req.body, {new: true})
         .then(function(question){res.send(question)})
         .then(console.log(`Question ${req.body.title} was updated`))
         .catch(err => console.log(err))
 });
 
-app.put('/questions/:id/answer', (req, res) => {
+app.put('/api/questions/:id/answer', (req, res) => {
 
     let newAnswer = new Answer ({
         author: req.body.author,
@@ -169,13 +173,18 @@ app.put('/questions/:id/answer', (req, res) => {
         .catch(err => console.log(err))
 });
 
-app.put('/questions/:id/answer/like', (req, res) => {
+app.put('/api/questions/:id/answer/like', (req, res) => {
     Question.updateOne({'answers._id': req.body.id}, {$set: {'answers.$.likes': req.body.likes}}, {new: true})
         .then(function (question) {
             res.send(question)
         })
         .then(console.log(`Likes for answer was added`))
         .catch(err => console.log(err))
+});
+
+/**** Reroute all unknown requests to the React index.html ****/
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../build/index.html'));
 });
 
 app.listen(port, () => console.log(`Q&A API running on port ${port}!`));
