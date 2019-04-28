@@ -44,7 +44,6 @@ db.once('open', function() {
     console.log("DB connection is open.");
 });
 
-
 // ********** Models **********
 //let Question = require('../models/Question');
 //let Answer = require('../models/Answer');
@@ -68,7 +67,6 @@ let questionSchema = new mongoose.Schema({
 
 let Answer = mongoose.model('Answer', answerSchema);
 let Question = mongoose.model('Question', questionSchema);
-
 
 const port = (process.env.PORT || 8080);
 
