@@ -28,14 +28,14 @@ class App extends Component {
     }
 
     getData() {
-        fetch(`${this.API_URL}/questions`)
+        fetch(`/api/questions`)
             .then(response => response.json()) // Turn into JSON     )
             .then(questions => this.setState({ questions: questions, isLoading: false }))
 
     }
 
     addQuestionData(text) {
-        fetch(`${this.API_URL}/questions`, {
+        fetch(`/api/questions`, {
             method: 'POST',
             body: JSON.stringify({
                 title: text.title,
@@ -54,7 +54,7 @@ class App extends Component {
     }
 
     addAnswerData(text) {
-        fetch(`${this.API_URL}/questions/`+ text.ref_id +'/answer', {
+        fetch(`/api/questions/`+ text.ref_id +'/answer', {
             method: 'PUT',
             body: JSON.stringify({
                     author: text.author,
@@ -73,7 +73,7 @@ class App extends Component {
     }
 
     addVote(text) {
-        fetch(`${this.API_URL}/questions/`+ text.ref_id +'/answer/like', {
+        fetch(`/api/questions/`+ text.ref_id +'/answer/like', {
             method: 'PUT',
             body: JSON.stringify({
                 id: text.id,
@@ -91,7 +91,7 @@ class App extends Component {
     }
 
     editData(text) {
-        fetch(`${this.API_URL}/questions/`+ text._id, {
+        fetch(`/api/questions/`+ text._id, {
             method: 'PUT',
             body: JSON.stringify({
                 title: text.title,
