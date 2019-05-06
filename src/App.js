@@ -15,7 +15,6 @@ class App extends Component {
     constructor(props) {
         super(props);
 
-        // TODO: Move this data to the server
         this.state = {
             questions: [],
             isLoading: true
@@ -50,6 +49,7 @@ class App extends Component {
             .then(json => {
                 console.log("Result of posting a new question:");
                 console.log(json);
+                this.getData();
             });
     }
 
@@ -69,6 +69,7 @@ class App extends Component {
             .then(json => {
                 console.log("Result of posting a new answer:");
                 console.log(json);
+                this.getData();
             });
     }
 
@@ -87,6 +88,7 @@ class App extends Component {
             .then(json => {
                 console.log("Result of voting:");
                 console.log(json);
+                this.getData();
             });
     }
 
@@ -106,6 +108,7 @@ class App extends Component {
             .then(json => {
                 console.log("Result of editing the question:");
                 console.log(json);
+                this.getData();
             });
     }
 
