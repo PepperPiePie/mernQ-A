@@ -27,7 +27,7 @@ class App extends Component {
     }
 
     getData() {
-        fetch(`${this.API_URL}/questions`)
+        fetch(`/api/questions`)
             .then(response => response.json()) // Turn into JSON     )
             .then(questions => this.setState({ questions: questions, isLoading: false }))
 
