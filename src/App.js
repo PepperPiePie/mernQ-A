@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import './styles/style.css';
-// import logo from './logo.svg';
+import GithubCorner from 'react-github-corner';
 
 import QuestionList from "./QuestionList";
 import Question from "./Question";
@@ -27,14 +27,14 @@ class App extends Component {
     }
 
     getData() {
-        fetch(`/api/questions`)
+        fetch(`${this.API_URL}/questions`)
             .then(response => response.json()) // Turn into JSON     )
             .then(questions => this.setState({ questions: questions, isLoading: false }))
 
     }
 
     addQuestionData(text) {
-        fetch(`/api/questions`, {
+        fetch(`${this.API_URL}/questions`, {
             method: 'POST',
             body: JSON.stringify({
                 title: text.title,
@@ -49,12 +49,11 @@ class App extends Component {
             .then(json => {
                 console.log("Result of posting a new question:");
                 console.log(json);
-                this.getData();
             });
     }
 
     addAnswerData(text) {
-        fetch(`/api/questions/`+ text.ref_id +'/answer', {
+        fetch(`${this.API_URL}/questions/`+ text.ref_id +'/answer', {
             method: 'PUT',
             body: JSON.stringify({
                     author: text.author,
@@ -69,12 +68,11 @@ class App extends Component {
             .then(json => {
                 console.log("Result of posting a new answer:");
                 console.log(json);
-                this.getData();
             });
     }
 
     addVote(text) {
-        fetch(`/api/questions/`+ text.ref_id +'/answer/like', {
+        fetch(`${this.API_URL}/questions/`+ text.ref_id +'/answer/like', {
             method: 'PUT',
             body: JSON.stringify({
                 id: text.id,
@@ -88,12 +86,11 @@ class App extends Component {
             .then(json => {
                 console.log("Result of voting:");
                 console.log(json);
-                this.getData();
             });
     }
 
     editData(text) {
-        fetch(`/api/questions/`+ text._id, {
+        fetch(`${this.API_URL}/questions/`+ text._id, {
             method: 'PUT',
             body: JSON.stringify({
                 title: text.title,
@@ -108,7 +105,6 @@ class App extends Component {
             .then(json => {
                 console.log("Result of editing the question:");
                 console.log(json);
-                this.getData();
             });
     }
 
@@ -128,8 +124,8 @@ class App extends Component {
         return (
             <Router>
                 <div className="container">
-                    {/*<img src={logo} className="logo" alt="logo" />*/}
                     <h1 className="text">Q & A</h1>
+                    <GithubCorner href="https://github.com/PepperPiePie/mernQ-A" size="100" octoColor="#DCDCDC" bannerColor="#3E4A5B"/>
 
                     <Switch>
                         <Route exact path={'/'}
