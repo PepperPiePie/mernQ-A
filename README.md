@@ -1,4 +1,4 @@
-## See deployed version on heroku https://ewa-cooking.herokuapp.com/
+## See deployed version on heroku https://ewa-qa.herokuapp.com/
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
